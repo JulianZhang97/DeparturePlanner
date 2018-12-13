@@ -1,0 +1,23 @@
+.departure-header{
+    background-image: url('plane-1000996_1280.jpg');
+    background-size: cover;
+    position: relative;
+    min-height: 300px;
+}
+
+.header-title{
+    position: absolute;
+    bottom: 0;
+    left: 10px;
+    font-size: 36px;
+    font-weight: 700;
+}
+
+.header-subtext{
+    position: absolute;
+    bottom: 0;
+    left: 30px;
+    font-size: 16px;
+}
+
+
