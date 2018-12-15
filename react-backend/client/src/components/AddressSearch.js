@@ -85,6 +85,4 @@ export default class AddressSearch extends Component {
             />
         )
     }
-
-
 }

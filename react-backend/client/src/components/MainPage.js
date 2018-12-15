@@ -1,14 +1,8 @@
-/* global google */
-
 import React, { Component } from 'react';
 
 import { Button } from 'react-bootstrap';
 import Autocomplete from 'react-autocomplete'
 import axios from 'axios'
-import { withScriptjs, GoogleMap, withGoogleMap, DirectionsRenderer} from 'react-google-maps';
-
-import { compose, withProps, lifecycle} from 'recompose'
-// const { compose, withProps, lifecycle} = require("recompose");
 
 import AddressSearch from './AddressSearch.js'
 import Header from './Header.js'
@@ -18,70 +12,6 @@ import airlines from './Airlines.js'
 
 var dateOptions = {hour: 'numeric', minute: 'numeric', timeZoneName: 'short', weekday: 'long', year: 'numeric', month: 'short', day: 'numeric'};
 
-
-const MapWithADirectionsRenderer = compose(
-  withProps({
-    loadingElement: <div style={{ height: `100%` }} />,
-    containerElement: <div style={{ height: `400px` }} />,
-    mapElement: <div style={{ height: `75%`, width: `100%` }} />,
-  }),
-  // withState('mapPane', 'onMapLoad'),
-  // withHandlers(() => {
-  //   const refs = {
-  //     map: undefined,
-  //   }
-  //   return {
-  //     onMapMounted: () => ref => {
-  //       refs.map = ref;
-  //     },
-  //     onMapChanged: ({ onMapLoad }) => () => {
-  //       onMapLoad(refs.map)
-  //     }
-  //   }
-  // }),
-  withScriptjs,
-  withGoogleMap,
-  lifecycle({
-    componentDidMount() {
-      const DirectionsService = new google.maps.DirectionsService();
-      DirectionsService.route({
-        origin: this.props.origin,
-        destination: this.props.destination,
-        travelMode: this.props.travelMode,
-        drivingOptions: this.props.drivingOptions}, 
-        
-        (result, status) => {
-        if (status === google.maps.DirectionsStatus.OK) {
-          console.log(result.routes[0].legs[0]);
-          this.setState({
-            directions: result,
-          });
-        } else {
-          console.error(`error fetching directions ${result}`);
-        }
-      });
-    }
-  })
-)(props =>
-  <GoogleMap
-    defaultCenter={new google.maps.LatLng(41.8507300, -87.6512600)}
-    options={({
-      disableDefaultUI: true,
-      gestureHandling: "none",
-
-    })}
-
-    // ref={props.onMapMounted}
-    // onTilesLoaded={props.onMapChanged}
-    >
-    {props.directions && 
-    <DirectionsRenderer 
-    directions={props.directions} 
-    panel={props.mapRef}
-    />
-    }
-  </GoogleMap>
-);
 
 export default class MainPage extends Component {  
   constructor(props) {
@@ -99,18 +29,7 @@ export default class MainPage extends Component {
       flightNum: "",
       curDate: new Date(),
       startAddress: "",
-
-      mapsAPI: "", 
-      
-      
-
-      testOrigin: "Eaton Centre",
-      testDest: "YYZ",
-      travelMode: "DRIVING",
-      drivingOptions: {
-        departureTime: new Date(),
-        trafficModel: 'optimistic'
-      },
+      mapsAPI: ""
       };
 
       this.handleAirlineFieldChange = this.handleAirlineFieldChange.bind(this)
@@ -144,13 +63,13 @@ export default class MainPage extends Component {
                 flightDate: flightDate, 
                 arrivalSite: this.state.arrivalSite,
                 airline: this.state.airline, 
-                flightNum: this.state.flightNum}
+                flightNum: this.state.flightNum,
+                homeAddress: this.state.startAddress}
         });
     }
 
     getStartAddress = (address) => {
       this.setState({startAddress: address})
-      console.log(this.state);
     }
 
 
@@ -240,18 +159,8 @@ export default class MainPage extends Component {
               <div className="cur-date"> Travel Date:
               {" " + this.state.curDate.toLocaleDateString("en-US", dateOptions)}
               </div>
-                {this.state.mapsAPI !== "" && 
-                <div className="mapPane">        
-                  <MapWithADirectionsRenderer 
-                    origin={this.state.testOrigin} 
-                    destination={this.state.testDest} 
-                    travelMode={this.state.travelMode} 
-                    drivingOptions={this.state.drivingOptions}
-                    googleMapURL={"https://maps.googleapis.com/maps/api/js?key=" + this.state.mapsAPI + "&v=3.exp&libraries=geometry,drawing,places"}/> 
-                </div>
-                }
+              
               <div className="airports"> 
-
                   <div className="airport">Departure Airport:  
                     <Autocomplete
                       getItemValue={(item) => item.value}

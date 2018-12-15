@@ -1,9 +1,15 @@
+/* global google */
+
 import React, { Component } from 'react';
 import ReactLoading from 'react-loading';
 
+
 import Header from './Header.js';
+import DirectionsMap from './DirectionsMap.js'
 
 import axios from 'axios'
+
+
 
 export default class ResultPage extends Component {
   constructor(props){
@@ -20,6 +26,18 @@ export default class ResultPage extends Component {
       departureTimeZone: "",
       flightExists: null,
       curTime: new Date(),
+
+      mapsAPI: "", 
+
+
+
+      testOrigin: "Eaton Centre",
+      testDest: "YYZ",
+      travelMode: "DRIVING",
+      drivingOptions: {
+        departureTime: new Date(),
+        trafficModel: 'optimistic'
+      },
     }
 
     this.searchFlight = this.searchFlight.bind(this);
@@ -27,7 +45,12 @@ export default class ResultPage extends Component {
   }
 
   componentDidMount(){
-   this.searchFlight();
+      console.log(this.state);
+
+      const apiKey = process.env.REACT_APP_GOOGLE_API_KEY;
+      this.setState({mapsAPI: apiKey})
+
+  //  this.searchFlight();
   }
 
   searchFlight(){
@@ -64,7 +87,6 @@ export default class ResultPage extends Component {
     var xmlDoc = parser.parseFromString(flightData,"text/xml");
     
    
-
     if(!xmlDoc.getElementsByTagName("Success").length === 0){
       console.log("Search Failed!");
       this.setState({flightExists: false, departureDetailsLoaded: true});
@@ -76,12 +98,7 @@ export default class ResultPage extends Component {
 
       this.setState({departureTime: flightDepartureTime, departureTimeZone: flightDepartureTimeZone});
       this.setState({flightExists: true, departureDetailsLoaded: true});
-
     }
-
-
-
-
   }
 
 
@@ -90,11 +107,18 @@ export default class ResultPage extends Component {
       <div>
           <Header>
           </Header>
-          {!this.state.departureDetailsLoaded && <ReactLoading type={"spinningBubbles"}/>};
-          {this.state.departureDetailsLoaded && <div>
-            {!this.state.flightExists ? <h1>Flight Not Found!</h1> : 
-
             <div>
+                {this.state.mapsAPI !== "" && 
+                <div className="mapPane">        
+                  <DirectionsMap
+                    origin={this.state.testOrigin} 
+                    destination={this.state.testDest} 
+                    travelMode={this.state.travelMode} 
+                    drivingOptions={this.state.drivingOptions}
+                    googleMapURL={"https://maps.googleapis.com/maps/api/js?key=" + this.state.mapsAPI + "&v=3.exp&libraries=geometry,drawing,places"}
+                    mapsAPI={this.state.mapsAPI}/> 
+                </div>
+                }
               <p>{this.state.departureSite}</p>
               <p>{this.state.arrivalSite}</p>
               <p>{this.state.airline}</p>
@@ -102,10 +126,7 @@ export default class ResultPage extends Component {
               <p>{this.state.departureTime}</p>
               <p>{this.state.departureTimeZone}</p>
             </div>
-          }
-          </div>
-        }
-      </div>
+    </div>
     );
   }
 }
