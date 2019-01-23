@@ -24,6 +24,7 @@ directionsCallback = response => {
 
   render() {
     return (
+    
           <div>
           <LoadScript
               id="script-loader"
@@ -35,7 +36,8 @@ directionsCallback = response => {
               onLoad={() => console.log("script loaded")}
               loadingElement={<div>Loading...</div>}
             >
-          <GoogleMap
+          
+         <GoogleMap
             id="basic-map-example"
             mapContainerStyle={{
               height: "400px",
@@ -43,9 +45,7 @@ directionsCallback = response => {
             }}
             options={({
                       disableDefaultUI: true,
-                      gestureHandling: "none",
-                
-                    })}
+                      gestureHandling: "none",})}
             zoom={8}
             center={{
               lat: 41.8507300,
@@ -61,7 +61,7 @@ directionsCallback = response => {
               }}
               callback={this.directionsCallback}
             />
-        }
+            }
             {this.state.response !== null && (
               
             <DirectionsRenderer
