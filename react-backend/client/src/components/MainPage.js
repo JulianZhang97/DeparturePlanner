@@ -34,16 +34,13 @@ export default class MainPage extends Component {
 
       this.handleAirlineFieldChange = this.handleAirlineFieldChange.bind(this)
       this.handleAirlineSelect = this.handleAirlineSelect.bind(this)
-
       this.handleDepartureFieldChange = this.handleDepartureFieldChange.bind(this)
       this.handleDepartureSiteSelect = this.handleDepartureSiteSelect.bind(this)
       this.searchSites = this.searchSites.bind(this)
       this.handleArrivalFieldChange = this.handleArrivalFieldChange.bind(this)
       this.handleArrivalSiteSelect = this.handleArrivalSiteSelect.bind(this)
-
       this.updateFlightNum = this.updateFlightNum.bind(this)
       this.handleSubmit = this.handleSubmit.bind(this)
-
       this.getStartAddress = this.getStartAddress.bind(this)
     }  
 
@@ -83,7 +80,6 @@ export default class MainPage extends Component {
           }
         }
         var self = this;
-
         axios.get("https://api.sandbox.amadeus.com/v1.2/airports/autocomplete", init)
         .then(function (response) {
           self.setState({siteList: response.data});
@@ -97,7 +93,6 @@ export default class MainPage extends Component {
     updateFlightNum(e){
       this.setState({flightNum: e.target.value})
     }
-
 
     handleAirlineFieldChange(e){
       this.setState({airlineBox: e.target.value})
@@ -114,7 +109,6 @@ export default class MainPage extends Component {
       this.setState({filteredAirlineList: []})
 
     }
-
 
     handleDepartureFieldChange(e){
       this.setState({departureSiteBox: e.target.value})
@@ -207,7 +201,8 @@ export default class MainPage extends Component {
                   </div>
                   <div className="flight-details">Flight #: <input value={this.state.flightNum} type="text" onChange={this.updateFlightNum}/></div>
               </div>
-              <div><Button onClick={this.handleSubmit}>Calculate Travel Times</Button></div>
+              <div>
+                <Button onClick={this.handleSubmit}>Calculate Travel Times</Button></div>
             </div>
         </div>
       );

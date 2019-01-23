@@ -1,87 +1,80 @@
-/* global google */
-
-
 import React, { Component } from 'react';
-import { withScriptjs, GoogleMap, withGoogleMap, DirectionsRenderer} from 'react-google-maps';
-import { compose, withProps, lifecycle} from 'recompose'
+import {GoogleMap, DirectionsService, DirectionsRenderer, TrafficLayer, LoadScript} from 'react-google-maps-api'
+
+class DirectionsMap extends Component {
+
+  state = {
+    response: null,
+  }
 
 
-const MapWithADirectionsRenderer = compose(
-    withProps({
-      loadingElement: <div style={{ height: `100%` }} />,
-      containerElement: <div style={{ height: `400px` }} />,
-      mapElement: <div style={{ height: `75%`, width: `100%` }} />,
-    }),
-    // withState('mapPane', 'onMapLoad'),
-    // withHandlers(() => {
-    //   const refs = {
-    //     map: undefined,
-    //   }
-    //   return {
-    //     onMapMounted: () => ref => {
-    //       refs.map = ref;
-    //     },
-    //     onMapChanged: ({ onMapLoad }) => () => {
-    //       onMapLoad(refs.map)
-    //     }
-    //   }
-    // }),
-    withScriptjs,
-    withGoogleMap,
-    lifecycle({
-      componentDidMount() {
-        const DirectionsService = new google.maps.DirectionsService();
-        DirectionsService.route({
-          origin: this.props.origin,
-          destination: this.props.destination,
-          travelMode: this.props.travelMode,
-          drivingOptions: this.props.drivingOptions}, 
-          
-          (result, status) => {
-          if (status === google.maps.DirectionsStatus.OK) {
-            console.log(result.routes[0].legs[0]);
-            this.setState({
-              directions: result,
-            });
-          } else {
-            console.error(`error fetching directions ${result}`);
-          }
-        });
-      }
-    })
-  )(props =>
-    <GoogleMap
-      defaultCenter={new google.maps.LatLng(41.8507300, -87.6512600)}
-      options={({
-        disableDefaultUI: true,
-        gestureHandling: "none",
-  
-      })}
-  
-      // ref={props.onMapMounted}
-      // onTilesLoaded={props.onMapChanged}
-      >
-      {props.directions && 
-      <DirectionsRenderer 
-      directions={props.directions} 
-      panel={props.mapRef}
-      />
-      }
-    </GoogleMap>
-  );
-
-
-
-export default class DirectionsMap extends Component {  
-    render(){
-        {console.log(this.props)}
-        return(
-            <MapWithADirectionsRenderer 
-                    origin={this.props.origin} 
-                    destination={this.props.destination} 
-                    travelMode={this.props.travelMode} 
-                    drivingOptions={this.props.drivingOptions}
-                    googleMapURL={"https://maps.googleapis.com/maps/api/js?key=" + this.props.mapsAPI + "&v=3.exp&libraries=geometry,drawing,places"}/> 
-        )
+directionsCallback = response => {
+  if (response !== null) {
+    if (response.status === 'OK') {
+      this.setState(
+        () => ({
+          response
+        })
+      )
+    } else {
+      console.log('response: ', response)
     }
+  }
 }
+
+  render() {
+    return (
+          <div>
+          <LoadScript
+              id="script-loader"
+              googleMapsApiKey={this.props.googleMapURL}
+              language={"en"}
+              region={"EN"}
+              version={"weekly"}
+              libraries={[]}
+              onLoad={() => console.log("script loaded")}
+              loadingElement={<div>Loading...</div>}
+            >
+          <GoogleMap
+            id="basic-map-example"
+            mapContainerStyle={{
+              height: "400px",
+              width: "100%"
+            }}
+            options={({
+                      disableDefaultUI: true,
+                      gestureHandling: "none",
+                
+                    })}
+            zoom={8}
+            center={{
+              lat: 41.8507300,
+              lng:-87.6512600
+            }}>
+            <TrafficLayer/>
+            {
+            <DirectionsService
+              options={{ // eslint-disable-line react-perf/jsx-no-new-object-as-prop
+                destination: this.props.destination,
+                origin: this.props.origin,
+                travelMode: this.props.travelMode
+              }}
+              callback={this.directionsCallback}
+            />
+        }
+            {this.state.response !== null && (
+              
+            <DirectionsRenderer
+              options={{ // eslint-disable-line react-perf/jsx-no-new-object-as-prop
+                directions: this.state.response
+              }}
+            />)}
+            </GoogleMap>
+         
+        </LoadScript>
+          </div>
+    );
+  }
+}
+
+export default DirectionsMap;
