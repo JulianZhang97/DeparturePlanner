@@ -26,19 +26,20 @@ directionsCallback = response => {
     return (
     
           <div>
-          <LoadScript
+         {/* <LoadScript
               id="script-loader"
-              googleMapsApiKey={this.props.googleMapURL}
+              googleMapsApiKey={this.props.googleMapAPI}
               language={"en"}
               region={"EN"}
               version={"weekly"}
               libraries={[]}
-              onLoad={() => console.log("script loaded")}
+              onLoad={() => {
+                console.log("script loaded")}}
               loadingElement={<div>Loading...</div>}
-            >
-          
+            > */}
          <GoogleMap
             id="basic-map-example"
+            googleMapURL={this.props.googleMapURL}
             mapContainerStyle={{
               height: "400px",
               width: "100%"
@@ -54,6 +55,7 @@ directionsCallback = response => {
             <TrafficLayer/>
             {
             <DirectionsService
+              googleMapURL={this.props.googleMapURL}
               options={{ // eslint-disable-line react-perf/jsx-no-new-object-as-prop
                 destination: this.props.destination,
                 origin: this.props.origin,
@@ -65,13 +67,14 @@ directionsCallback = response => {
             {this.state.response !== null && (
               
             <DirectionsRenderer
+              googleMapURL={this.props.googleMapURL}
               options={{ // eslint-disable-line react-perf/jsx-no-new-object-as-prop
                 directions: this.state.response
               }}
             />)}
             </GoogleMap>
          
-        </LoadScript>
+        {/* </LoadScript> */}
           </div>
     );
   }

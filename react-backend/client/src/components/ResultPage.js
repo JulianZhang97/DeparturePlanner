@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 
-import Header from './Header.js';
 import DirectionsMap from './DirectionsMap.js'
 
-
+import './Style.css'
 import axios from 'axios'
 import moment from 'moment'
 
@@ -23,7 +22,7 @@ export default class ResultPage extends Component {
 
       flightExists: null,
 
-      departureTime: "2019-01-20T17:50:00",
+      departureTime: "2019-01-26T19:50:00",
       departureTimeZone: "-0500",
 
       worstCaseResult: null,
@@ -40,16 +39,15 @@ export default class ResultPage extends Component {
     
   }
 
-  componentDidMount(){
+  async componentDidMount(){
       const apiKey = process.env.REACT_APP_GOOGLE_API_KEY;
       this.setState({mapsAPI: apiKey})
 
-      //Must wait for this server call
-      // this.searchFlight();
-
-      // if(this.state.flightExists === true)
-        //Must wait for this server call
-        // this.calculateDeparture();
+      // await this.searchFlight();
+      // if(this.state.flightExists === true){
+      //   this.calculateDeparture();
+      // }
+      
       this.calculateDeparture();
   }
 
@@ -71,7 +69,7 @@ export default class ResultPage extends Component {
     + this.state.departureSite + "/" + this.state.arrivalSite + "/" 
     + this.state.flightDate, init)
     .then(function (response) {
-      // console.log(response.data);
+      console.log("Successfully retrieved flight");
       self.getDepartureDetails(response.data);      
     })
     .catch(function (error) {
@@ -90,8 +88,8 @@ export default class ResultPage extends Component {
     }
 
     else{
-      var departureTime = xmlDoc.getElementsByTagName("FlightDetails")[0].getAttribute("FLSDepartureDateTime");
-      var departureTimeZone = xmlDoc.getElementsByTagName("FlightDetails")[0].getAttribute("FLSDepartureTimeOffset");
+      var departureTime = xmlDoc.getElementsByTagName("FlightDetails").item(0).getAttribute("FLSDepartureDateTime");
+      var departureTimeZone = xmlDoc.getElementsByTagName("FlightDetails").item(0).getAttribute("FLSDepartureTimeOffset");
 
       this.setState({departureTime: departureTime, departureTimeZone: departureTimeZone});
       this.setState({flightExists: true});
@@ -234,14 +232,13 @@ export default class ResultPage extends Component {
   render(){
     return(
       <div>
-        <Header></Header>
           <div>
             <div className="mapPane">  
               <DirectionsMap
                 origin={this.state.homeAddress}
                 destination={this.state.departureSite}
                 travelMode={"DRIVING"}
-                googleMapURL={this.state.mapsAPI}
+                googleMapURL={"https://maps.googleapis.com/maps/api/js?key=" + this.state.mapsAPI + "&v=3.exp&libraries=geometry,drawing,places"}
                 /> 
             </div>
             <p>{this.state.message}</p>

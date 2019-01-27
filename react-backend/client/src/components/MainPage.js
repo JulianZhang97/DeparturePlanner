@@ -6,7 +6,7 @@ import axios from 'axios'
 
 import AddressSearch from './AddressSearch.js'
 import Header from './Header.js'
-import './MainPage.css'
+import './Style.css'
 import airlines from './Airlines.js'
 
 
@@ -136,17 +136,18 @@ export default class MainPage extends Component {
     render(){
       return(
         <div id="main-page">
-            <Header>              
-            </Header>
+            <div className="main-header">
+              <p className="header-title">DeparturePlanner</p>
+              <p className="header-subtext">Never miss a flight again</p>
+            </div>
 
+            <div className="main-content">
               <div className="home-address">
-                Home Address:
+                Where are you leaving from?:
                 <div className="address-autofill">
                 {this.state.mapsAPI !== "" &&  <AddressSearch
                     googleMapURL={"https://maps.googleapis.com/maps/api/js?key=" + this.state.mapsAPI + "&v=3.exp&libraries=geometry,drawing,places"}
-                    setAddress ={this.getStartAddress}
-                    /> 
-                }
+                    setAddress ={this.getStartAddress}/> }
                 </div>
               </div>
             <div className="form-container">
@@ -202,8 +203,10 @@ export default class MainPage extends Component {
                   <div className="flight-details">Flight #: <input value={this.state.flightNum} type="text" onChange={this.updateFlightNum}/></div>
               </div>
               <div>
-                <Button onClick={this.handleSubmit}>Calculate Travel Times</Button></div>
-            </div>
+                <Button onClick={this.handleSubmit}>Calculate Travel Times</Button>
+                </div>
+              </div>
+          </div>
         </div>
       );
     }

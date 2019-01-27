@@ -10,7 +10,6 @@ router.get('/', function(req, res, next) {
     key: process.env.SERVER_GOOGLE_API_KEY
   });
 
-  // const trafficMode = req.params.trafficMode;
   const origin = req.query.origin;
   const destination = req.query.destination;
   const trafficMode =  req.query.trafficMode;
