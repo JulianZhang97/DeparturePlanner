@@ -1,12 +1,16 @@
 #main-page{
     background-image: url('airplane-architecture-buildings-993022.jpg');
     background-size: cover;
-    height: 100vh;
-    width: 100vw;
+    height: 100%;
+    width: 100%;
     position: absolute;
-
     -webkit-filter: grayscale(40%); /* Safari 6.0 - 9.0 */
     filter: grayscale(40%);
+    overflow: auto;
+    background-attachment: fixed;
+    /* background-position: center; */
+    background-repeat: no-repeat;
+    
 }
 
 
@@ -19,6 +23,7 @@
 }
 
 .header-title{
+    margin-top: 0;
     font-size: 3vw;
     font-weight: 500;
     margin-block-end: 0;
@@ -26,41 +31,48 @@
 }
 
 .header-subtext{
-    font-size: 1vw;
+    margin-top: 0;
+    font-size: 1.1vw;
     font-weight: 300;
     margin-block-start: 0;
     font-family: 'Roboto', sans-serif;
     font-style: italic;
 }
+
+.input-title{
+    width: 100%;
+    margin-bottom: 5px;
+}
+
+.form-node{
+    margin-top: 20px;
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+.cur-date{
+    align-content: center;
+    text-align: center;
+    font-size: 1vw;
+}
+
+.input-box{
+    box-sizing: border-box;
+    border-radius: 5px;
+    border: 1px solid transparent;
+    width: 400px;
+    height: 42px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    font-size: 18px;
+}
    
 
 .main-content{
+    margin-top: 25px;
+    margin-bottom: 25px;
     align-content: center;
     text-align: center;
-}
-
-.home-address{
-}
-
-
-.airports{
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-}
-
-.airport{
-    width: 50%;
-}
-
-.flight-info{
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-}
-
-.flight-details{
-    width: 50%;
+    font-size: 18px;
 }
 
 

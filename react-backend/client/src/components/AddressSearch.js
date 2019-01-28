@@ -44,14 +44,15 @@ const PlacesWithStandaloneSearchBox = compose(
         style={{
           boxSizing: `border-box`,
           border: `1px solid transparent`,
-          width: `300px`,
-          height: `32px`,
-          // padding: `0 12px`,
+          width: `400px`,
+          height: `42px`,
           borderRadius: `5px`,
           boxShadow: `0 2px 6px rgba(0, 0, 0, 0.3)`,
-          fontSize: `14px`,
-          outline: `none`,
           textOverflow: `ellipses`,
+          // padding: `0 12px`,
+          fontSize: `18px`,
+          // outline: `none`,
+
         }}
       />
     </StandaloneSearchBox>
