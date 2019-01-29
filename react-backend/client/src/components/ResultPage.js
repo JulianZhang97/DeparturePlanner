@@ -1,9 +1,11 @@
 import React, { Component } from 'react'
 
-import Button from '@material-ui/core/Button'
 import Icon from '@material-ui/core/Icon'
 import Grid from '@material-ui/core/Grid'
 import Fab from '@material-ui/core/Fab';
+
+
+import { BeatLoader } from 'react-spinners';
 
 import DirectionsMap from './DirectionsMap.js'
 
@@ -23,19 +25,18 @@ export default class ResultPage extends Component {
       flightNum: this.props.location.state.flightNum,
       flightDate: this.props.location.state.flightDate,
       homeAddress: this.props.location.state.homeAddress,
-
+      curDate: this.props.location.state.curDate,
 
       flightExists: null,
 
-      departureTime: "2019-01-26T19:50:00",
-      departureTimeZone: "-0500",
-      
-      departureTimeStr: "",
+      // departureTime: "2019-01-26T19:50:00",
+      // departureTimeZone: "-0500",
 
       worstCaseResult: null,
       regularCaseResult: null,
       bestCaseResult: null,
 
+      departureTimeStr: "",
       message: "",
       travelInfo: "",
     }
@@ -43,19 +44,26 @@ export default class ResultPage extends Component {
     this.searchFlight = this.searchFlight.bind(this);
     this.getDepartureDetails = this.getDepartureDetails.bind(this);
     this.calculateDeparture = this.calculateDeparture.bind(this);
-    
+
+    this.handleHomeButton = this.handleHomeButton.bind(this);
   }
+
 
   async componentDidMount(){
       const apiKey = process.env.REACT_APP_GOOGLE_API_KEY;
       this.setState({mapsAPI: apiKey})
 
-      // await this.searchFlight();
-      // if(this.state.flightExists === true){
-      //   this.calculateDeparture();
-      // }
+      await this.searchFlight();
+      if(this.state.flightExists === true){
+        this.calculateDeparture();
+      }
       
-      this.calculateDeparture();
+      // this.calculateDeparture();
+  }
+
+  handleHomeButton(){
+    this.props.history.push({
+      pathname: '/'});
   }
 
 
@@ -76,7 +84,6 @@ export default class ResultPage extends Component {
     + this.state.departureSite + "/" + this.state.arrivalSite + "/" 
     + this.state.flightDate, init)
     .then(function (response) {
-      console.log("Successfully retrieved flight");
       self.getDepartureDetails(response.data);      
     })
     .catch(function (error) {
@@ -89,14 +96,18 @@ export default class ResultPage extends Component {
     var parser = new DOMParser();
     var xmlDoc = parser.parseFromString(flightData,"text/xml");
     
-    if(!xmlDoc.getElementsByTagName("Success").length === 0){
+    if(xmlDoc.getElementsByTagName("FLSResponseFields").length === 0){
       console.log("Search Failed!");
       this.setState({flightExists: false});
+      this.setState({message: "Flight not found!"});
     }
-
+    
     else{
+      console.log(xmlDoc);
       var departureTime = xmlDoc.getElementsByTagName("FlightDetails").item(0).getAttribute("FLSDepartureDateTime");
       var departureTimeZone = xmlDoc.getElementsByTagName("FlightDetails").item(0).getAttribute("FLSDepartureTimeOffset");
+
+      console.log("Successfully retrieved flight");
 
       this.setState({departureTime: departureTime, departureTimeZone: departureTimeZone});
       this.setState({flightExists: true});
@@ -220,11 +231,11 @@ export default class ResultPage extends Component {
         const minsUntilLatestAbsoluteDeparture = moment.duration(latestAbsoluteDepartureTime.diff(curTime)).asMinutes();
 
         if(minsUntilLatestAbsoluteDeparture > 0){
-          this.setState({travelInfo: "Current Travel Time: " + bestCaseTravelTime + "-" + currentTravelTime});
+          this.setState({travelInfo: "Current Travel Time: " + currentTravelTime});
           this.setState({message: "We recommend you leave immediately. Based on our projections, any traffic or airport delays may cause you to miss your flight."});
         }
         else{
-          this.setState({travelInfo: "Current Travel Time: " + bestCaseTravelTime +  "-" + currentTravelTime});
+          this.setState({travelInfo: "Current Travel Time: " + currentTravelTime});
           this.setState({message: "According to our calculations, you are most likely unable to make this flight."});
         } 
       }
@@ -238,37 +249,57 @@ export default class ResultPage extends Component {
           <div className="result-header">
             <p className="header-title">DeparturePlanner</p>
             <p className="header-subtext">Never miss a flight again</p>
+
+            <div className="cur-date"> Current Time: {" " +  
+              moment(this.state.curDate).format('MMM Do YYYY, h:mma')}</div>
           </div>
 
           <div className="new-search-button">
-                <Fab variant="extended" aria-label="Delete">
+                <Fab variant="extended" aria-label="Delete" onClick={this.handleHomeButton}>
                 <Icon>home</Icon>Home
             </Fab>
           </div>
-           
-          <Grid     container  
-                    direction="column"
-                    justify="center"
-                    alignItems="center"
-                    spacing={12}>
-          <Grid item xs={5}>
-            <div className="map-pane">  
-              <DirectionsMap
-                origin={this.state.homeAddress}
-                destination={this.state.departureSite}
-                travelMode={"DRIVING"}
-                googleMapURL={"https://maps.googleapis.com/maps/api/js?key=" + this.state.mapsAPI + "&v=3.exp&libraries=geometry,drawing,places"}/> 
-            </div>
-          </Grid>
-          <Grid item xs={3}>
-            <div className="travel-info">
-              <p>Flight: {this.state.airline}{this.state.flightNum} Route: {this.state.departureSite} ->{this.state.arrivalSite}
-              <p>Departure Time: {this.state.departureTimeStr}</p></p>
-              <p>{this.state.message}</p>
-              <p>{this.state.travelInfo}</p>
-            </div>
-          </Grid>
-        </Grid>
+         
+          <div className="result-content">
+            <Grid     container  
+                      direction="column"
+                      justify="center"
+                      alignItems="center"
+                      spacing={12}>
+             <Grid item xs={3}>
+              <BeatLoader
+                  // css={override}
+                  sizeUnit={"px"}
+                  size={150}
+                  color={'#123abc'}
+                  loading={this.state.flightExists === null}/>
+              {this.state.flightExists === true && <div className="flight-info">
+                <p><Icon className="plane-icon">flight</Icon> {this.state.airline}{this.state.flightNum}:  {this.state.departureSite} <Icon>arrow_forward</Icon> {this.state.arrivalSite}</p>
+                <p><Icon>access_time</Icon> {this.state.departureTimeStr}</p>
+              </div>}
+            </Grid>
+            <Grid item xs={10}>
+              <div className="travel-info">
+                <BeatLoader
+                  // css={override}
+                  sizeUnit={"px"}
+                  size={150}
+                  color={'#123abc'}
+                  loading={this.state.message === ""}/>
+                <p>{this.state.message}</p>
+              </div>
+            </Grid>  
+          </Grid>  
+          <div className="map-pane">  
+          <p>{this.state.travelInfo}</p> 
+            <DirectionsMap
+              origin={this.state.homeAddress}
+              destination={this.state.departureSite}
+              travelMode={"DRIVING"}
+              googleMapURL={"https://maps.googleapis.com/maps/api/js?key=" + this.state.mapsAPI + "&v=3.exp&libraries=geometry,drawing,places"}/> 
+          </div>
+        </div> 
+
       </div>
     );
   }

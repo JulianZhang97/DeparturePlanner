@@ -6,17 +6,13 @@ import Grid from '@material-ui/core/Grid'
 
 import Autocomplete from 'react-autocomplete'
 import axios from 'axios'
+import moment from 'moment'
 import Fade from 'react-reveal/Fade'
-
-
 
 
 import AddressSearch from './AddressSearch.js'
 import './Style.css'
 import airlines from './Airlines.js'
-
-
-var dateOptions = {hour: 'numeric', minute: 'numeric', timeZoneName: 'short', weekday: 'long', year: 'numeric', month: 'short', day: 'numeric'};
 
 
 export default class MainPage extends Component {  
@@ -49,6 +45,7 @@ export default class MainPage extends Component {
       this.handleArrivalSiteSelect = this.handleArrivalSiteSelect.bind(this)
       this.updateFlightNum = this.updateFlightNum.bind(this)
       this.handleNextButton = this.handleNextButton.bind(this)
+      this.handlePreviousButton = this.handlePreviousButton.bind(this)
       this.getStartAddress = this.getStartAddress.bind(this)
     }  
 
@@ -61,7 +58,6 @@ export default class MainPage extends Component {
       if(this.state.inputStatus < 2){
         const inputNum = this.state.inputStatus;
         this.setState({inputStatus: inputNum + 1});
-        // console.log(this.state);
       }
 
       if(this.state.inputStatus === 2){
@@ -76,10 +72,19 @@ export default class MainPage extends Component {
                   arrivalSite: this.state.arrivalSite,
                   airline: this.state.airline, 
                   flightNum: this.state.flightNum,
-                  homeAddress: this.state.startAddress}
+                  homeAddress: this.state.startAddress,
+                  curTime: this.state.curDate}
           });
         }
     }
+
+    handlePreviousButton(){
+      if(this.state.inputStatus > 0){
+        const inputNum = this.state.inputStatus;
+        this.setState({inputStatus: inputNum - 1});
+      }
+    }
+
 
     getStartAddress = (address) => {
       this.setState({startAddress: address})
@@ -157,7 +162,8 @@ export default class MainPage extends Component {
               <p className="header-title">DeparturePlanner</p>
               <p className="header-subtext">Never miss a flight again</p>
 
-              <div className="cur-date"> Current Time: {" " + this.state.curDate.toLocaleDateString("en-US", dateOptions)}</div>
+              <div className="cur-date"> Current Time: {" " +  
+              moment(this.state.curDate).format('MMM Do YYYY, h:mma')}</div>
             </div>
 
            
@@ -230,7 +236,7 @@ export default class MainPage extends Component {
                     // spacing={24}
                     >
                 <Grid item xs={3} md={2} xl={1}>
-                  <div><Button size="large" variant="contained" color="secondary"><Icon>arrow_back</Icon>Previous</Button></div>
+                  <div><Button size="large" variant="contained" color="secondary" onClick={this.handlePreviousButton}><Icon>arrow_back</Icon>Previous</Button></div>
                 </Grid>
                 <Grid item xs={3} md={2} xl={1}>
                   <div><Button size="large" variant="contained" color="primary" onClick={this.handleNextButton}>Next<Icon>arrow_forward</Icon></Button></div>

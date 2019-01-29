@@ -8,11 +8,10 @@
     filter: grayscale(40%);
     overflow: auto;
     background-attachment: fixed;
-    /* background-position: center; */
+    background-position: center;
     background-repeat: no-repeat;
     
 }
-
 
 .main-header{
     margin-top: 5%;
@@ -28,13 +27,15 @@
     height: 15%;
 }
 
-
-
-.new-search-button{
-    position: absolute;
-    top: 5px;
-    left: 5px;
+.flight-info{
+    font-size: 1.1vw;
+    background-color: steelblue   ;
+    padding: 1px 10px 1px;
+    color: white;
+    border-radius: 15px;
+    text-align: center;
 }
+
 
 .header-title{
     margin-top: 0;
@@ -52,6 +53,22 @@
     font-family: 'Roboto', sans-serif;
     font-style: italic;
 }
+
+.plane-icon{
+    -webkit-transform: rotate(90deg);
+    -moz-transform: rotate(90deg);
+    -ms-transform: rotate(90deg);
+    -o-transform: rotate(90deg);
+    transform: rotate(90deg);
+    left: 0px;
+}
+
+.new-search-button{
+    position: absolute;
+    top: 5px;
+    left: 5px;
+}
+
 
 .input-title{
     width: 100%;
@@ -89,19 +106,27 @@
     font-size: 18px;
 }
 
+.result-content{
+    margin-top: 5vh;
+}
 
-
+.travel-info{
+    font-size: 1.25vw;
+    margin-top: 10px;
+}
 
 .map-pane{
     align-content: center;
     text-align: center;
     display: inline-block;
-
+    position: absolute;
+    bottom: 0px;
+    font-size: 1.1vw;
 }
 
 #directions-map{
-    height: 20vh;
-    width: 40vw;
+    height: 40vh;
+    width: 100vw;
 }
 
 

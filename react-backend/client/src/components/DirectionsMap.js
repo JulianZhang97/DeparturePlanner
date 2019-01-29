@@ -26,7 +26,7 @@ directionsCallback = response => {
     return (
     
           <div>
-         <LoadScript
+         {/* <LoadScript
               id="script-loader"
               googleMapsApiKey={this.props.googleMapAPI}
               language={"en"}
@@ -35,14 +35,10 @@ directionsCallback = response => {
               libraries={[]}
               onLoad={() => {
                 console.log("script loaded")}}
-              loadingElement={<div>Loading...</div>}>
+              loadingElement={<div>Loading...</div>}> */}
          <GoogleMap
             id="directions-map"
             googleMapURL={this.props.googleMapURL}
-            // mapContainerStyle={{
-            //   height: "300px",
-            //   width: "200px"
-            // }}
             options={({
                       disableDefaultUI: true,
                       gestureHandling: "none",})}
@@ -72,8 +68,7 @@ directionsCallback = response => {
               }}
             />)}
             </GoogleMap>
-         
-        </LoadScript>
+        {/* </LoadScript> */}
           </div>
     );
   }
