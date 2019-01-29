@@ -1,12 +1,14 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 
 import Button from '@material-ui/core/Button'
+import Icon from '@material-ui/core/Icon'
+import Grid from '@material-ui/core/Grid'
+
 import Autocomplete from 'react-autocomplete'
 import axios from 'axios'
 import Fade from 'react-reveal/Fade'
 
-import Icon from '@material-ui/core/Icon';
-import Grid from '@material-ui/core/Grid';
+
 
 
 import AddressSearch from './AddressSearch.js'
@@ -59,7 +61,7 @@ export default class MainPage extends Component {
       if(this.state.inputStatus < 2){
         const inputNum = this.state.inputStatus;
         this.setState({inputStatus: inputNum + 1});
-        console.log(this.state);
+        // console.log(this.state);
       }
 
       if(this.state.inputStatus === 2){
@@ -224,11 +226,13 @@ export default class MainPage extends Component {
               <Grid container  
                     direction="row"
                     justify="center"
-                    alignItems="center">
-                <Grid item xs={1}>
-                  <div><Button size="large" variant="contained" color="secondary">Start Over<Icon>refresh</Icon></Button></div>
+                    alignItems="center"
+                    // spacing={24}
+                    >
+                <Grid item xs={3} md={2} xl={1}>
+                  <div><Button size="large" variant="contained" color="secondary"><Icon>arrow_back</Icon>Previous</Button></div>
                 </Grid>
-                <Grid item xs={1}>
+                <Grid item xs={3} md={2} xl={1}>
                   <div><Button size="large" variant="contained" color="primary" onClick={this.handleNextButton}>Next<Icon>arrow_forward</Icon></Button></div>
                 </Grid>
               </Grid>

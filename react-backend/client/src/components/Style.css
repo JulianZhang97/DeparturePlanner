@@ -19,7 +19,21 @@
     text-align: center;
     width: 100%;
     height: 25%;
+}
 
+.result-header{
+    margin-top: 5%;
+    text-align: center;
+    width: 100%;
+    height: 15%;
+}
+
+
+
+.new-search-button{
+    position: absolute;
+    top: 5px;
+    left: 5px;
 }
 
 .header-title{
@@ -73,6 +87,21 @@
     align-content: center;
     text-align: center;
     font-size: 18px;
+}
+
+
+
+
+.map-pane{
+    align-content: center;
+    text-align: center;
+    display: inline-block;
+
+}
+
+#directions-map{
+    height: 20vh;
+    width: 40vw;
 }
 
 
