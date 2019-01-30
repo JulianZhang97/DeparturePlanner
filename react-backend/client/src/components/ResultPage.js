@@ -29,8 +29,8 @@ export default class ResultPage extends Component {
 
       flightExists: null,
 
-      // departureTime: "2019-01-26T19:50:00",
-      // departureTimeZone: "-0500",
+      departureTime: "2019-01-29T20:40:00",
+      departureTimeZone: "-0500",
 
       worstCaseResult: null,
       regularCaseResult: null,
@@ -53,12 +53,13 @@ export default class ResultPage extends Component {
       const apiKey = process.env.REACT_APP_GOOGLE_API_KEY;
       this.setState({mapsAPI: apiKey})
 
-      await this.searchFlight();
-      if(this.state.flightExists === true){
-        this.calculateDeparture();
-      }
+      // await this.searchFlight();
+      // if(this.state.flightExists === true){
+      //   this.calculateDeparture();
+      // }
       
-      // this.calculateDeparture();
+      this.setState({flightExists: true});
+      this.calculateDeparture();
   }
 
   handleHomeButton(){
@@ -149,8 +150,8 @@ export default class ResultPage extends Component {
     //display bestguess time directions and travel time 
     if(minsUntilDeparture > 90){
       this.setState({travelInfo: "Current Travel Time: " + currentTravelTime});
-      this.setState({message: "Over an hour left until you need to leave based on estimated travel time"
-      + "and flight departure! However, keep in mind that traffic conditions may change from now until departure."});
+      this.setState({message: "Over an hour left until you need to leave based on estimated travel time "
+      + "and flight departure! Keep in mind that traffic conditions may change."});
     }
 
      //If < 90 mins and > 30 mins, run pessimistic traffic model search and see if large delays 
@@ -179,8 +180,8 @@ export default class ResultPage extends Component {
 
       if(minsUntilWorstCaseDeparture < 30){
         this.setState({travelInfo: "Current Travel Time: " + currentTravelTime + "-" + worstCaseTravelTime});
-        this.setState({message: "There is heavy traffic currently and your travel time may be much longer " +
-        "than usual. We recommend that you leave soon."});
+        this.setState({message: "There is heavy traffic currently and your travel time may be longer " +
+        "than usual. We recommend leaving soon."});
       }
       else{
         this.setState({travelInfo: "Current Travel Time: " + currentTravelTime + "-" + worstCaseTravelTime});
@@ -270,23 +271,17 @@ export default class ResultPage extends Component {
               <BeatLoader
                   // css={override}
                   sizeUnit={"px"}
-                  size={150}
+                  size={50}
                   color={'#123abc'}
-                  loading={this.state.flightExists === null}/>
-              {this.state.flightExists === true && <div className="flight-info">
+                  loading={this.state.flightExists === null || this.state.message === ""}/>
+              {this.state.flightExists === true && this.state.message !== "" && <div className="flight-info">
                 <p><Icon className="plane-icon">flight</Icon> {this.state.airline}{this.state.flightNum}:  {this.state.departureSite} <Icon>arrow_forward</Icon> {this.state.arrivalSite}</p>
                 <p><Icon>access_time</Icon> {this.state.departureTimeStr}</p>
               </div>}
             </Grid>
             <Grid item xs={10}>
               <div className="travel-info">
-                <BeatLoader
-                  // css={override}
-                  sizeUnit={"px"}
-                  size={150}
-                  color={'#123abc'}
-                  loading={this.state.message === ""}/>
-                <p>{this.state.message}</p>
+                {this.state.message !== "" && <p>{this.state.message}</p>}
               </div>
             </Grid>  
           </Grid>  
