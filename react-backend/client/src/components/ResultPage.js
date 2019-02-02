@@ -3,8 +3,6 @@ import React, { Component } from 'react'
 import Icon from '@material-ui/core/Icon'
 import Grid from '@material-ui/core/Grid'
 import Fab from '@material-ui/core/Fab';
-
-
 import { BeatLoader } from 'react-spinners';
 
 import DirectionsMap from './DirectionsMap.js'
@@ -52,14 +50,15 @@ export default class ResultPage extends Component {
       const apiKey = process.env.REACT_APP_GOOGLE_API_KEY;
       this.setState({mapsAPI: apiKey})
 
+      //Uncomment these three lines testing with flight API
       // await this.searchFlight();
       // if(this.state.flightExists === true){
       //   this.calculateDeparture();
       // }
       
+      //Uncomment three lines testing without flight API
       this.setState({flightExists: true});
       this.setState({departureTimeStr: moment(this.state.departureTime + this.state.departureTimeZone).format('MMM D, h:mma')});   
-
       this.calculateDeparture();
   }
 
@@ -82,16 +81,17 @@ export default class ResultPage extends Component {
       }
     }
     var self = this;
-    await axios.get(proxyurl + "https://flightlookup.azure-api.net/v1/xml/TimeTable/" 
-    + this.state.departureSite + "/" + this.state.arrivalSite + "/" 
-    + this.state.flightDate, init)
-    .then(function (response) {
-      self.getDepartureDetails(response.data);   
+    try{
+      var res = await axios.get(proxyurl + "https://flightlookup.azure-api.net/v1/xml/TimeTable/" 
+      + this.state.departureSite + "/" + this.state.arrivalSite + "/" 
+      + this.state.flightDate, init);
+
+      self.getDepartureDetails(res.data);   
       this.setState({departureTimeStr: moment(this.state.departureTime + this.state.departureTimeZone).format('MMM Do YYYY, h:mma')});   
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
+    }
+    catch(error){
+      console.error("Error retrieving flight");
+    }
   }
 
 
@@ -106,7 +106,6 @@ export default class ResultPage extends Component {
     }
     
     else{
-      console.log(xmlDoc);
       var departureTime = xmlDoc.getElementsByTagName("FlightDetails").item(0).getAttribute("FLSDepartureDateTime");
       var departureTimeZone = xmlDoc.getElementsByTagName("FlightDetails").item(0).getAttribute("FLSDepartureTimeOffset");
 
@@ -117,10 +116,15 @@ export default class ResultPage extends Component {
 
 
   async calculateDeparture(){
-    await axios.get('/time?' + 'origin=' + this.state.homeAddress + '&destination=' 
-    + this.state.departureSite + '&departureTime=' + this.state.departureTime + '&departureTimeZone=' + 
-    this.state.departureTimeZone)
-      .then(res => this.setState({travelInfo: res.data.travelInfo, message: res.data.message}));
+    try{
+      const res = await axios.get('/time?' + 'origin=' + this.state.homeAddress + '&destination=' 
+      + this.state.departureSite + '&departureTime=' + this.state.departureTime + '&departureTimeZone=' + 
+      this.state.departureTimeZone);
+      this.setState({travelInfo: res.data.travelInfo, message: res.data.message})
+    }
+    catch(error){
+      console.error('error calculating departure times')
+    }
   }
 
 
@@ -145,12 +149,9 @@ export default class ResultPage extends Component {
             <Grid     container  
                       direction="column"
                       justify="center"
-                      alignItems="center"
-                      // spacing={12}
-                      >
+                      alignItems="center">
              <Grid item xs={3}>
               <BeatLoader
-                  // css={override}
                   sizeUnit={"px"}
                   size={50}
                   color={'#123abc'}
