@@ -26,7 +26,7 @@ directionsCallback = response => {
     return (
     
           <div>
-         <LoadScript
+         {/* <LoadScript
               id="script-loader"
               googleMapsApiKey={this.props.googleMapAPI}
               language={"en"}
@@ -35,7 +35,7 @@ directionsCallback = response => {
               libraries={[]}
               onLoad={() => {
                 console.log("script loaded")}}
-              loadingElement={<div>Loading...</div>}>
+              loadingElement={<div>Loading...</div>}> */}
          <GoogleMap
             id="directions-map"
             googleMapURL={this.props.googleMapURL}
@@ -68,7 +68,7 @@ directionsCallback = response => {
               }}
             />)}
             </GoogleMap>
-        </LoadScript>
+        {/* </LoadScript> */}
           </div>
     );
   }
