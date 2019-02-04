@@ -10,13 +10,18 @@ var timeRouter = require('./routes/time');
 var app = express();
 
 // view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
+// app.set('views', path.join(__dirname, 'views'));
+// app.set('view engine', 'jade');
 
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+
+// Serve static files from the React frontend app
+app.use(express.static(path.join(__dirname, 'client/build')))
+
+
 // app.use(express.static(path.join(__dirname, 'public')));
 
 // app.use('/', indexRouter);
@@ -27,8 +32,7 @@ app.use(function(req, res, next) {
   next(createError(404));
 });
 
-// Serve static files from the React frontend app
-app.use(express.static(path.join(__dirname, 'client/build')))
+
 
 // error handler
 app.use(function(err, req, res, next) {
