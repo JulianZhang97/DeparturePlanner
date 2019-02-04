@@ -27,8 +27,8 @@ export default class ResultPage extends Component {
 
       flightExists: null,
 
-      departureTime: "2019-02-02T20:40:00",
-      departureTimeZone: "-0500",
+      // departureTime: "2019-02-02T20:40:00",
+      // departureTimeZone: "-0500",
       departureTimeStr: "",
 
       worstCaseResult: null,
@@ -51,15 +51,15 @@ export default class ResultPage extends Component {
       this.setState({mapsAPI: apiKey})
 
       //Uncomment these three lines testing with flight API
-      // await this.searchFlight();
-      // if(this.state.flightExists === true){
-      //   this.calculateDeparture();
-      // }
+      await this.searchFlight();
+      if(this.state.flightExists === true){
+        this.calculateDeparture();
+      }
       
       //Uncomment three lines testing without flight API
-      this.setState({flightExists: true});
-      this.setState({departureTimeStr: moment(this.state.departureTime + this.state.departureTimeZone).format('MMM D, h:mma')});   
-      this.calculateDeparture();
+      // this.setState({flightExists: true});
+      // this.setState({departureTimeStr: moment(this.state.departureTime + this.state.departureTimeZone).format('MMM D, h:mma')});   
+      // this.calculateDeparture();
   }
 
   handleHomeButton(){
