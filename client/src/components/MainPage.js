@@ -5,7 +5,6 @@ import Icon from '@material-ui/core/Icon'
 import Grid from '@material-ui/core/Grid'
 
 import Autocomplete from 'react-autocomplete'
-import axios from 'axios'
 import moment from 'moment'
 import Fade from 'react-reveal/Fade'
 
@@ -111,25 +110,6 @@ export default class MainPage extends Component {
           console.log(responseError.code);
         });
       }
-
-      //const airportKey = process.env.REACT_APP_AIRPORT_API_KEY;
-      // if(keyword !== ""){
-      //   const init = {
-      //     params: {
-      //       apikey: airportKey,
-      //       term: keyword
-      //     }
-      //   }
-      //   var self = this;
-      //   axios.get("https://api.sandbox.amadeus.com/v1.2/airports/autocomplete", init)
-      //   .then(function (response) {
-      //     console.log(response.data)
-      //     self.setState({siteList: response.data});
-      //   })
-      //   .catch(function (error) {
-      //     console.log(error);
-      //   });
-      // } 
     }
 
     updateFlightNum(e){
