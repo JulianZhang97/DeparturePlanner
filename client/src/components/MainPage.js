@@ -9,7 +9,6 @@ import axios from 'axios'
 import moment from 'moment'
 import Fade from 'react-reveal/Fade'
 
-
 import AddressSearch from './AddressSearch.js'
 import './Style.css'
 import airlines from './Airlines.js'
@@ -91,24 +90,46 @@ export default class MainPage extends Component {
     }
 
 
-    searchSites(keyword){
-      const airportKey = process.env.REACT_APP_AIRPORT_API_KEY;
-      if(keyword !== ""){
-        const init = {
-          params: {
-            apikey: airportKey,
-            term: keyword
-          }
-        }
-        var self = this;
-        axios.get("https://api.sandbox.amadeus.com/v1.2/airports/autocomplete", init)
-        .then(function (response) {
-          self.setState({siteList: response.data});
-        })
-        .catch(function (error) {
-          console.log(error);
+    searchSites(searchKeyword){
+      var Amadeus = require('amadeus');
+
+      if(searchKeyword !== ""){
+        var amadeus = new Amadeus({
+          clientId: process.env.REACT_APP_NEW_AIRPORT_API_KEY,
+          clientSecret: process.env.REACT_APP_NEW_AIRPORT_API_SECRET,
+          hostname: 'production'
         });
-      } 
+
+        var self = this;
+        amadeus.referenceData.locations.get({
+          keyword : searchKeyword,
+          subType : 'AIRPORT'
+        }).then(function(response){
+          console.log(response.data);
+          self.setState({siteList: response.data});
+        }).catch(function(responseError){
+          console.log(responseError.code);
+        });
+      }
+
+      //const airportKey = process.env.REACT_APP_AIRPORT_API_KEY;
+      // if(keyword !== ""){
+      //   const init = {
+      //     params: {
+      //       apikey: airportKey,
+      //       term: keyword
+      //     }
+      //   }
+      //   var self = this;
+      //   axios.get("https://api.sandbox.amadeus.com/v1.2/airports/autocomplete", init)
+      //   .then(function (response) {
+      //     console.log(response.data)
+      //     self.setState({siteList: response.data});
+      //   })
+      //   .catch(function (error) {
+      //     console.log(error);
+      //   });
+      // } 
     }
 
     updateFlightNum(e){
@@ -137,8 +158,8 @@ export default class MainPage extends Component {
     }
 
     handleDepartureSiteSelect(item){
-      this.setState({departureSiteBox: item.label})
-      this.setState({departureSite: item.value})
+      this.setState({departureSiteBox: item.detailedName})
+      this.setState({departureSite: item.iataCode})
       this.setState({siteList: []})
     }
 
@@ -148,8 +169,8 @@ export default class MainPage extends Component {
     }
 
     handleArrivalSiteSelect(item){
-      this.setState({arrivalSiteBox: item.label})
-      this.setState({arrivalSite: item.value})
+      this.setState({arrivalSiteBox: item.detailedName})
+      this.setState({arrivalSite: item.iataCode})
       this.setState({siteList: []})
     }
 
@@ -166,8 +187,6 @@ export default class MainPage extends Component {
               moment(this.state.curDate).format('MMM Do YYYY, h:mma')}</div>
             </div>
 
-           
-
             <div className="main-content">
               <div className="form-container">
                   {this.state.inputStatus === 0 && <Fade><div className="home-address form-node">  
@@ -181,13 +200,13 @@ export default class MainPage extends Component {
                   <div className="input-title"> Departure Airport:</div>  
                     <Autocomplete 
                       inputProps={{className:"input-box"}}
-                      getItemValue={(item) => item.value}
+                      getItemValue={(item) => item.iataCode}
                       menuStyle={{zIndex: '998'}}
                       items={this.state.siteList}
                       renderItem={(item, isHighlighted) =>
                         <div
                         style={{ background: isHighlighted ? 'lightgray' : 'white' }}>
-                          {item.label}
+                          {item.detailedName}
                         </div>}
                       value={this.state.departureSiteBox}
                       onChange={e => this.handleDepartureFieldChange(e)}
@@ -198,11 +217,11 @@ export default class MainPage extends Component {
                     <Autocomplete
                       inputProps={{className:"input-box"}}
                       menuStyle={{zIndex: '998'}}
-                      getItemValue={(item) => item.value}
+                      getItemValue={(item) => item.iataCode}
                       items={this.state.siteList}
                       renderItem={(item, isHighlighted) =>
                         <div style={{ background: isHighlighted ? 'lightgray' : 'white' }}>
-                          {item.label}
+                          {item.detailedName}
                         </div>
                       }
                       value={this.state.arrivalSiteBox}

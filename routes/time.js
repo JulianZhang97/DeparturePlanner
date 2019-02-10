@@ -39,12 +39,15 @@ router.get('/', async function(req, res, next) {
   catch(error){
     console.error('error fetching best_guess directions');
   }
+  
   const currentBestGuessTravelTime =  moment.duration(regularDurationVal, 'seconds');
   const currentBestGuessTravelTimeStr = currentBestGuessTravelTime.humanize();
   travelInfo = "Estimated Current Travel Time: " + currentBestGuessTravelTimeStr;
   
   const recommendedDepartureTime =  recommendedAirportArrivalTime.clone().subtract(currentBestGuessTravelTime, 'minutes');
   const minsUntilDeparture = moment.duration(recommendedDepartureTime.diff(curTime)).asMinutes(); 
+
+  console.log(minsUntilDeparture);
 
   if(minsUntilDeparture > 0 && minsUntilDeparture < 30){
     message = "You should leave soon.";

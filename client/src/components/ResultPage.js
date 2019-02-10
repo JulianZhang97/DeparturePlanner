@@ -27,8 +27,8 @@ export default class ResultPage extends Component {
 
       flightExists: null,
 
-      // departureTime: "2019-02-02T20:40:00",
-      // departureTimeZone: "-0500",
+      departureTime: "2019-02-09T19:00:00",
+      departureTimeZone: "-0500",
       departureTimeStr: "",
 
       worstCaseResult: null,
