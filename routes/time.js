@@ -4,8 +4,6 @@ var express = require('express');
 
 var router = express.Router();
 
-const curTime = moment();
-
 //The RECOMMENDED # of minutes to arrive before departure 
 const recommendedAirportTime = 120;
 
@@ -25,6 +23,8 @@ router.get('/', async function(req, res, next) {
   const departureTimeZone = req.query.departureTimeZone;
   var travelInfo = "";
   var message = "";
+
+  const curTime = moment();
 
   const flightDepartureTime = moment(departureTime + departureTimeZone, "YYYY-MM-DDTHH:mm:ss ZZ");
   const recommendedAirportArrivalTime = flightDepartureTime.clone().subtract(recommendedAirportTime, 'minutes');
@@ -47,6 +47,7 @@ router.get('/', async function(req, res, next) {
   
   const recommendedDepartureTime =  recommendedAirportArrivalTime.clone().subtract(currentBestGuessTravelTime, 'minutes');
   const minsUntilDeparture = moment.duration(recommendedDepartureTime.diff(curTime)).asMinutes(); 
+
 
   console.log("When your flight leaves: " + flightDepartureTime.format());
   console.log("When you should arrive at airport: " + recommendedAirportArrivalTime.format());
