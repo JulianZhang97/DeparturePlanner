@@ -104,7 +104,6 @@ export default class MainPage extends Component {
           keyword : searchKeyword,
           subType : 'AIRPORT'
         }).then(function(response){
-          console.log(response.data);
           self.setState({siteList: response.data});
         }).catch(function(responseError){
           console.log(responseError.code);

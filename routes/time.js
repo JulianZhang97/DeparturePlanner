@@ -43,10 +43,14 @@ router.get('/', async function(req, res, next) {
   const currentBestGuessTravelTime =  moment.duration(regularDurationVal, 'seconds');
   const currentBestGuessTravelTimeStr = currentBestGuessTravelTime.humanize();
   travelInfo = "Estimated Current Travel Time: " + currentBestGuessTravelTimeStr;
+
   
   const recommendedDepartureTime =  recommendedAirportArrivalTime.clone().subtract(currentBestGuessTravelTime, 'minutes');
   const minsUntilDeparture = moment.duration(recommendedDepartureTime.diff(curTime)).asMinutes(); 
 
+  console.log("When your flight leaves: " + flightDepartureTime.format());
+  console.log("When you should arrive at airport: " + recommendedAirportArrivalTime.format());
+  console.log("When you should leave the house: " + recommendedDepartureTime.format());
   console.log(minsUntilDeparture);
 
   if(minsUntilDeparture > 0 && minsUntilDeparture < 30){
