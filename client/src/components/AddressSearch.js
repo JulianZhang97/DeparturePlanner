@@ -40,28 +40,14 @@ const PlacesWithStandaloneSearchBox = compose(
       onPlacesChanged={props.onPlacesChanged}>
       <input
         type="text"
-        placeholder="E.g. Toronto, ON, 1234 West Street"
-        style={{
-          boxSizing: `border-box`,
-          border: `1px solid transparent`,
-          width: `400px`,
-          height: `42px`,
-          borderRadius: `5px`,
-          boxShadow: `0 2px 6px rgba(0, 0, 0, 0.3)`,
-          textOverflow: `ellipses`,
-          padding: `5px`,
-          // padding: `0 12px`,
-          fontSize: `18px`,
-          // outline: `none`,
-
-        }}
+        placeholder="E.g. 1234 West Street, Toronto, ON"
+        className={props.className}
       />
     </StandaloneSearchBox>
   </div>
 );
 
 export default class AddressSearch extends Component {  
-
     constructor(props) {
         super(props);
         this.state = {
@@ -74,6 +60,7 @@ export default class AddressSearch extends Component {
             <PlacesWithStandaloneSearchBox 
             googleMapURL={this.props.googleMapURL}
             setAddress={this.props.setAddress}
+            className={this.props.className}
             />
         )
     }

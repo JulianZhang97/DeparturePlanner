@@ -161,7 +161,6 @@ export default class MainPage extends Component {
             <div className="main-header">
               <p className="header-title">DeparturePlanner</p>
               <p className="header-subtext">Never miss a flight again</p>
-
               <div className="cur-date"> Current Time: {" " +  
               moment(this.state.curDate).format('MMM Do YYYY, h:mma')}</div>
             </div>
@@ -180,10 +179,10 @@ export default class MainPage extends Component {
                     <Autocomplete 
                       inputProps={{className:"input-box"}}
                       getItemValue={(item) => item.iataCode}
-                      menuStyle={{zIndex: '998'}}
+                      menuStyle={{zIndex: '998', borderRadius: '5px'}}
                       items={this.state.siteList}
                       renderItem={(item, isHighlighted) =>
-                        <div
+                        <div className="input-dropdown"
                         style={{ background: isHighlighted ? 'lightgray' : 'white' }}>
                           {item.detailedName}
                         </div>}
@@ -195,11 +194,11 @@ export default class MainPage extends Component {
                   <div className="input-title"> Arrival Airport:</div>
                     <Autocomplete
                       inputProps={{className:"input-box"}}
-                      menuStyle={{zIndex: '998'}}
+                      menuStyle={{zIndex: '998', borderRadius: '5px'}}
                       getItemValue={(item) => item.iataCode}
                       items={this.state.siteList}
                       renderItem={(item, isHighlighted) =>
-                        <div style={{ background: isHighlighted ? 'lightgray' : 'white' }}>
+                        <div className="input-dropdown" style={{ background: isHighlighted ? 'lightgray' : 'white' }}>
                           {item.detailedName}
                         </div>
                       }
@@ -214,9 +213,9 @@ export default class MainPage extends Component {
                       inputProps={{className:"input-box"}}
                       getItemValue={(item) => item.iata_code}
                       items={this.state.filteredAirlineList}
-                      menuStyle={{zIndex: '998'}}
+                      menuStyle={{zIndex: '998', borderRadius: '5px'}}
                       renderItem={(item, isHighlighted) =>
-                        <div style={{background: isHighlighted ? 'lightgray' : 'white'}}>
+                        <div className="input-dropdown" style={{background: isHighlighted ? 'lightgray' : 'white'}}>
                           {item.name}
                         </div>}
                       value={this.state.airlineBox}
@@ -224,7 +223,7 @@ export default class MainPage extends Component {
                       onSelect={(value, item) => this.handleAirlineSelect(item)}/> 
                   </div></Fade>}
                   {this.state.inputStatus === 2 && <Fade><div className="flight-details form-node">
-                  <div className="input-title"> Flight# :
+                  <div className="input-dropdown"> Flight# :
                   </div><input  className="input-box" value={this.state.flightNum} type="text" onChange={this.updateFlightNum}/></div></Fade>}
               </div>
               <Grid container  
@@ -233,10 +232,10 @@ export default class MainPage extends Component {
                     alignItems="center"
                     // spacing={24}
                     >
-                <Grid item xs={3} md={2} xl={1}>
+                <Grid item xs={5} sm={3} md={2} xl={1}>
                   <div><Button size="large" variant="contained" color="secondary" onClick={this.handlePreviousButton}><Icon>arrow_back</Icon>Previous</Button></div>
                 </Grid>
-                <Grid item xs={3} md={2} xl={1}>
+                <Grid item xs={5} sm={3} md={2} xl={1}>
                   <div><Button size="large" variant="contained" color="primary" onClick={this.handleNextButton}>Next<Icon>arrow_forward</Icon></Button></div>
                 </Grid>
               </Grid>

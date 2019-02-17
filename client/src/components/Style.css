@@ -1,3 +1,31 @@
+.header-title{
+    margin-top: 0;
+    font-size: 36px;
+    font-weight: 500;
+    margin-block-end: 0;
+    font-family: 'Roboto', sans-serif;
+}
+
+.header-subtext{
+    margin-top: 0;
+    font-size: 14px;
+    font-weight: 300;
+    margin-block-start: 0;
+    font-family: 'Roboto', sans-serif;
+    font-style: italic;
+}
+
+.cur-date{
+    align-content: center;
+    text-align: center;
+}
+
+.input-title{
+    width: 100%;
+    margin-bottom: 5px;
+}
+
+
 #main-page{
     background-image: url('airplane-architecture-buildings-993022.jpg');
     background-size: cover;
@@ -16,7 +44,7 @@
     margin-top: 5%;
     text-align: center;
     width: 100%;
-    height: 25%;
+    height: 15%;
 }
 
 .result-header{
@@ -27,7 +55,7 @@
 }
 
 .flight-info{
-    font-size: 1.1vw;
+    font-size: 20px;
     background-color: steelblue   ;
     padding: 1px 10px 1px;
     color: white;
@@ -35,23 +63,6 @@
     text-align: center;
 }
 
-
-.header-title{
-    margin-top: 0;
-    font-size: 3vw;
-    font-weight: 500;
-    margin-block-end: 0;
-    font-family: 'Roboto', sans-serif;
-}
-
-.header-subtext{
-    margin-top: 0;
-    font-size: 1.1vw;
-    font-weight: 300;
-    margin-block-start: 0;
-    font-family: 'Roboto', sans-serif;
-    font-style: italic;
-}
 
 .plane-icon{
     -webkit-transform: rotate(90deg);
@@ -62,10 +73,10 @@
     left: 0px;
 }
 
-.new-search-button{
+.home-button{
     position: absolute;
-    top: 5px;
-    left: 5px;
+    top: 0px;
+    left: 0px;
 }
 
 
@@ -80,23 +91,24 @@
     width: 100%;
 }
 
-.cur-date{
-    align-content: center;
-    text-align: center;
-    font-size: 1vw;
-}
 
 .input-box{
     box-sizing: border-box;
     border-radius: 5px;
     border: 1px solid transparent;
     width: 400px;
-    height: 42px;
+    height: 40px;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
     font-size: 18px;
     padding: 5px;
 }
-   
+
+.input-dropdown{
+    border-bottom: 1px solid #dcdcdc;
+    font-family: 'Roboto', sans-serif;
+    padding: 5px;
+
+}
 
 .main-content{
     margin-top: 25px;
@@ -106,14 +118,17 @@
     font-size: 18px;
 }
 
-.result-content{
-    margin-top: 5vh;
+.travel-info{
+    font-size: 20px;
+    margin: 1px;
 }
 
-.travel-info{
-    font-size: 1.25vw;
-    margin-top: 10px;
+.form-container{
+    margin-top: 10%;
+    margin-bottom: 1%;
 }
+
+
 
 .map-pane{
     align-content: center;
@@ -121,12 +136,77 @@
     display: inline-block;
     position: absolute;
     bottom: 0px;
-    font-size: 1.1vw;
 }
 
 #directions-map{
     height: 40vh;
     width: 100vw;
+}
+
+@media screen and (max-width: 600px) {
+    .input-box{
+        width: 300px;
+        height: 40px;
+        font-size: 12px;
+        padding: 5px;
+    }
+
+    .main-header{
+        height: 20%;
+    }
+
+    .flight-info{
+        font-size: 12px;
+    }
+
+    .travel-info{
+        font-size: 12px;
+    }
+    .main-header{
+        margin-top: 10%;
+        height: 15%;
+    }
+
+
+
+}
+
+@media screen and (min-width: 1440px) {
+    .header-title{
+        font-size: 64px;
+        font-weight: 400;
+    }
+    .header-subtext{
+        font-size: 20px;
+    }
+    .cur-date{
+        font-size: 24px;
+    }
+    .input-title{
+        font-size: 28px;
+        margin-bottom: 20px;
+    }   
+    .main-header{
+        margin-top: 2%;
+    }
+
+    .travel-info{
+        font-size: 30px;
+    }
+
+    .input-box{
+        width: 600px;
+        height: 60px;
+        font-size: 24px;
+        padding: 5px;
+    }
+
+    .flight-info{
+        font-size: 30px;
+        padding: 1px 10px 1px;
+    }
+
+
 }
 
 

@@ -42,7 +42,7 @@ router.get('/', async function(req, res, next) {
   
   const currentBestGuessTravelTime =  moment.duration(regularDurationVal, 'seconds');
   const currentBestGuessTravelTimeStr = currentBestGuessTravelTime.humanize();
-  travelInfo = "Estimated Current Travel Time: " + currentBestGuessTravelTimeStr;
+  travelInfo = currentBestGuessTravelTimeStr;
 
   
   const recommendedDepartureTime =  recommendedAirportArrivalTime.clone().subtract(currentBestGuessTravelTime, 'minutes');

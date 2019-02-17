@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 
 import Icon from '@material-ui/core/Icon'
 import Grid from '@material-ui/core/Grid'
-import Fab from '@material-ui/core/Fab';
+import Button from '@material-ui/core/Button'
 import { BeatLoader } from 'react-spinners';
 
 import DirectionsMap from './DirectionsMap.js'
@@ -27,8 +27,8 @@ export default class ResultPage extends Component {
 
       flightExists: null,
 
-      departureTime: "2019-02-09T19:00:00",
-      departureTimeZone: "-0500",
+      // departureTime: "2019-02-16T18:00:00",
+      // departureTimeZone: "-0500",
       departureTimeStr: "",
 
       worstCaseResult: null,
@@ -102,7 +102,7 @@ export default class ResultPage extends Component {
     if(xmlDoc.getElementsByTagName("FLSResponseFields").length === 0){
       console.log("Search Failed!");
       this.setState({flightExists: false});
-      this.setState({message: "Flight not found!"});
+      this.setState({message: "ERROR: Flight not found!"});
     }
     
     else{
@@ -131,7 +131,7 @@ export default class ResultPage extends Component {
   render(){
     return(
         <div id="main-page">
-          <div className="result-header">
+          <div className="main-header">
             <p className="header-title">DeparturePlanner</p>
             <p className="header-subtext">Never miss a flight again</p>
 
@@ -139,36 +139,37 @@ export default class ResultPage extends Component {
               moment(this.state.curDate).format('MMM Do YYYY, h:mma')}</div>
           </div>
 
-          <div className="new-search-button">
-                <Fab variant="extended" aria-label="Delete" onClick={this.handleHomeButton}>
-                <Icon>home</Icon>Home
-            </Fab>
+          <div className="home-button">
+          <Button size="large" variant="contained" color="primary" onClick={this.handleHomeButton}>  <Icon>home</Icon></Button>
           </div>
-         
           <div className="result-content">
             <Grid     container  
                       direction="column"
                       justify="center"
                       alignItems="center">
-             <Grid item xs={3}>
+             <Grid item xs={12}>
               <BeatLoader
                   sizeUnit={"px"}
                   size={50}
                   color={'#123abc'}
                   loading={this.state.flightExists === null || this.state.message === ""}/>
               {this.state.flightExists === true && this.state.message !== "" && <div className="flight-info">
+                <p>Flight Details:</p>
                 <p><Icon className="plane-icon">flight</Icon> {this.state.airline}{this.state.flightNum}:  {this.state.departureSite} <Icon>arrow_forward</Icon> {this.state.arrivalSite}</p>
                 <p><Icon>access_time</Icon> {this.state.departureTimeStr}</p>
               </div>}
             </Grid>
-            <Grid item xs={10}>
+            <Grid item xs={12}>
               <div className="travel-info">
                 {this.state.message !== "" && <p>{this.state.message}</p>}
               </div>
             </Grid>  
           </Grid>  
           <div className="map-pane">  
-          <p>{this.state.travelInfo}</p> 
+          {this.state.travelInfo !== "" && <div>
+            <p className="travel-info"> <Icon>home</Icon> {this.state.homeAddress} <Icon>flight_takeoff</Icon>  {this.state.departureSite}</p> 
+            <p className="travel-info"><Icon>timer</Icon> {this.state.travelInfo}</p>
+            </div>}
             <DirectionsMap
               origin={this.state.homeAddress}
               destination={this.state.departureSite}
