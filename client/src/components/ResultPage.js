@@ -167,7 +167,7 @@ export default class ResultPage extends Component {
           </Grid>  
           <div className="map-pane">  
           {this.state.travelInfo !== "" && <div>
-            <p className="travel-info"> <Icon>home</Icon> {this.state.homeAddress} <Icon>flight_takeoff</Icon>  {this.state.departureSite}</p> 
+            <p className="travel-info"> <Icon>home</Icon> {this.state.homeAddress}   <Icon>flight_takeoff</Icon>  {this.state.departureSite}</p> 
             <p className="travel-info"><Icon>timer</Icon> {this.state.travelInfo}</p>
             </div>}
             <DirectionsMap

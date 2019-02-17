@@ -223,7 +223,7 @@ export default class MainPage extends Component {
                       onSelect={(value, item) => this.handleAirlineSelect(item)}/> 
                   </div></Fade>}
                   {this.state.inputStatus === 2 && <Fade><div className="flight-details form-node">
-                  <div className="input-dropdown"> Flight# :
+                  <div className="input-title"> Flight# :
                   </div><input  className="input-box" value={this.state.flightNum} type="text" onChange={this.updateFlightNum}/></div></Fade>}
               </div>
               <Grid container  

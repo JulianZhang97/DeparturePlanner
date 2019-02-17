@@ -13,20 +13,13 @@ const PlacesWithStandaloneSearchBox = compose(
   lifecycle({
     componentWillMount() {
       const refs = {}
-
       this.setState({
-        places: [],
         onSearchBoxMounted: ref => {
           refs.searchBox = ref;
         },
         onPlacesChanged: () => {
           const places = refs.searchBox.getPlaces();
-
-          this.setState({
-            places,
-          });
-
-          this.props.setAddress(this.state.places[0].formatted_address)
+          this.props.setAddress(places[0].formatted_address)
         },
       })
     },
