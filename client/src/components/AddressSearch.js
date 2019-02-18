@@ -19,7 +19,11 @@ const PlacesWithStandaloneSearchBox = compose(
         },
         onPlacesChanged: () => {
           const places = refs.searchBox.getPlaces();
-          this.props.setAddress(places[0].formatted_address)
+          if(places[0] === undefined){
+            alert('Error! Please enter location again.');}
+          if(places[0] !== undefined){
+            this.props.setAddress(places[0].formatted_address)
+          }
         },
       })
     },
@@ -41,13 +45,6 @@ const PlacesWithStandaloneSearchBox = compose(
 );
 
 export default class AddressSearch extends Component {  
-    constructor(props) {
-        super(props);
-        this.state = {
-          searchAddress : ""
-          };
-        }  
-
     render(){
         return(
             <PlacesWithStandaloneSearchBox 
