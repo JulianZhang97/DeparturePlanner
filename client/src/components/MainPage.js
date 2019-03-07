@@ -19,7 +19,8 @@ export default class MainPage extends Component {
     this.state = {
       departureSiteBox: "",
       departureSite: "",
-      siteList : [],
+      arrivalSiteList : [],
+      departureSiteList: [],
       arrivalSiteBox: "",
       arrivalSite: "",
       airlineList : airlines.airlines,
@@ -89,24 +90,30 @@ export default class MainPage extends Component {
     }
 
 
-    searchSites(searchKeyword){
+    searchSites(searchKeyword, siteType){
       var Amadeus = require('amadeus');
 
       if(searchKeyword !== ""){
         var amadeus = new Amadeus({
           clientId: process.env.REACT_APP_NEW_AIRPORT_API_KEY,
           clientSecret: process.env.REACT_APP_NEW_AIRPORT_API_SECRET,
-          hostname: 'production'
+          hostname: 'production',
+          host: "cors-anywhere.herokuapp.com/api.amadeus.com"
         });
-
         var self = this;
         amadeus.referenceData.locations.get({
           keyword : searchKeyword,
           subType : 'AIRPORT'
         }).then(function(response){
-          self.setState({siteList: response.data});
-        }).catch(function(responseError){
-          console.log(responseError.code);
+          if(siteType === "departure"){
+            self.setState({departureSiteList: response.data});
+          }
+          else{
+            self.setState({arrivalSiteList: response.data});
+          }
+
+        }).catch(function(error){
+          console.log(error.code);
         });
       }
     }
@@ -133,7 +140,7 @@ export default class MainPage extends Component {
 
     handleDepartureFieldChange(e){
       this.setState({departureSiteBox: e.target.value})
-      this.searchSites(e.target.value)  
+      this.searchSites(e.target.value, "departure")  
     }
 
     handleDepartureSiteSelect(item){
@@ -144,7 +151,7 @@ export default class MainPage extends Component {
 
     handleArrivalFieldChange(e){
       this.setState({arrivalSiteBox: e.target.value})
-      this.searchSites(e.target.value)  
+      this.searchSites(e.target.value, "arrival");  
     }
 
     handleArrivalSiteSelect(item){
@@ -180,9 +187,9 @@ export default class MainPage extends Component {
                       inputProps={{className:"input-box"}}
                       getItemValue={(item) => item.iataCode}
                       menuStyle={{zIndex: '998', borderRadius: '5px'}}
-                      items={this.state.siteList}
+                      items={this.state.departureSiteList}
                       renderItem={(item, isHighlighted) =>
-                        <div className="input-dropdown"
+                        <div key={item.id} className="input-dropdown"
                         style={{ background: isHighlighted ? 'lightgray' : 'white' }}>
                           {item.detailedName}
                         </div>}
@@ -196,9 +203,9 @@ export default class MainPage extends Component {
                       inputProps={{className:"input-box"}}
                       menuStyle={{zIndex: '998', borderRadius: '5px'}}
                       getItemValue={(item) => item.iataCode}
-                      items={this.state.siteList}
+                      items={this.state.arrivalSiteList}
                       renderItem={(item, isHighlighted) =>
-                        <div className="input-dropdown" style={{ background: isHighlighted ? 'lightgray' : 'white' }}>
+                        <div key={item.id} className="input-dropdown" style={{ background: isHighlighted ? 'lightgray' : 'white' }}>
                           {item.detailedName}
                         </div>
                       }
@@ -215,7 +222,7 @@ export default class MainPage extends Component {
                       items={this.state.filteredAirlineList}
                       menuStyle={{zIndex: '998', borderRadius: '5px'}}
                       renderItem={(item, isHighlighted) =>
-                        <div className="input-dropdown" style={{background: isHighlighted ? 'lightgray' : 'white'}}>
+                        <div key={item.iata_code} className="input-dropdown" style={{background: isHighlighted ? 'lightgray' : 'white'}}>
                           {item.name}
                         </div>}
                       value={this.state.airlineBox}

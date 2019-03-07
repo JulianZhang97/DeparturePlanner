@@ -1,9 +1,12 @@
 .header-title{
     margin-top: 0;
     font-size: 36px;
-    font-weight: 400;
+    font-weight: 300;
     margin-block-end: 0;
-    font-family: 'Roboto', sans-serif;
+}
+
+body{
+    font-family: 'Raleway', sans-serif;
 }
 
 .header-subtext{
@@ -11,7 +14,6 @@
     font-size: 14px;
     font-weight: 300;
     margin-block-start: 0;
-    font-family: 'Roboto', sans-serif;
     font-style: italic;
 }
 
@@ -80,7 +82,7 @@
 .home-button{
     position: absolute;
     top: 0px;
-    left: 0px;
+    left: -5px;
 }
 
 
@@ -109,7 +111,6 @@
 
 .input-dropdown{
     border-bottom: 1px solid #dcdcdc;
-    font-family: 'Roboto', sans-serif;
     padding: 5px;
 }
 
