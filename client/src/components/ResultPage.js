@@ -69,25 +69,11 @@ export default class ResultPage extends Component {
 
 
   async searchFlight(){
-    const flightSearchKey = process.env.REACT_APP_FLIGHT_API_KEY;
-    const proxyurl = "https://cors-anywhere.herokuapp.com/";
-    const init = {
-      headers: {
-        "Ocp-Apim-Subscription-Key": flightSearchKey
-      },
-      params: {
-        "Airline": this.state.airline,
-        "FlightNumber": this.state.flightNum,
-      }
-    }
-    var self = this;
     try{
-      var res = await axios.get(proxyurl + "https://flightlookup.azure-api.net/v1/xml/TimeTable/" 
-      + this.state.departureSite + "/" + this.state.arrivalSite + "/" 
-      + this.state.flightDate, init);
-
-      self.getDepartureDetails(res.data);   
-      this.setState({departureTimeStr: moment(this.state.departureTime + this.state.departureTimeZone).format('MMM Do YYYY, h:mma')});   
+      var res =  await axios.get('/flight?' + 'departureSite=' + this.state.departureSite +'&arrivalSite=' + this.state.arrivalSite + '&airline='
+      + this.state.airline + '&flightNum=' + this.state.flightNum + '&flightDate=' + this.state.flightDate);
+      console.log(res.data);
+      this.getDepartureDetails(res.data.flightInfo);   
     }
     catch(error){
       console.error("Error retrieving flight");
@@ -111,6 +97,7 @@ export default class ResultPage extends Component {
 
       this.setState({departureTime: departureTime, departureTimeZone: departureTimeZone});
       this.setState({flightExists: true});
+      this.setState({departureTimeStr: moment(this.state.departureTime + this.state.departureTimeZone).format('MMM Do YYYY, h:mma')});  
     }
   }
 

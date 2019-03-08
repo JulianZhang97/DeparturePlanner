@@ -7,6 +7,7 @@ import Grid from '@material-ui/core/Grid'
 import Autocomplete from 'react-autocomplete'
 import moment from 'moment'
 import Fade from 'react-reveal/Fade'
+import axios from 'axios'
 
 import AddressSearch from './AddressSearch.js'
 import './Style.css'
@@ -90,31 +91,20 @@ export default class MainPage extends Component {
     }
 
 
-    searchSites(searchKeyword, siteType){
-      var Amadeus = require('amadeus');
-
-      if(searchKeyword !== ""){
-        var amadeus = new Amadeus({
-          clientId: process.env.REACT_APP_NEW_AIRPORT_API_KEY,
-          clientSecret: process.env.REACT_APP_NEW_AIRPORT_API_SECRET,
-          hostname: 'production',
-          host: "cors-anywhere.herokuapp.com/api.amadeus.com"
-        });
-        var self = this;
-        amadeus.referenceData.locations.get({
-          keyword : searchKeyword,
-          subType : 'AIRPORT'
-        }).then(function(response){
-          if(siteType === "departure"){
-            self.setState({departureSiteList: response.data});
+    async searchSites(searchKeyword, siteType){
+      if(searchKeyword === ""){
+        siteType === "departure" ? this.setState({departureSiteList: []}): this.setState({arrivalSiteList: []});
+      }
+      else{
+        try{
+          var res =  await axios.get('/airports?' + 'searchKeyword=' + searchKeyword);
+          if(res.data.siteList !== undefined && res.data.siteList.length !== 0){
+            siteType === "departure" ? this.setState({departureSiteList: res.data.siteList}): this.setState({arrivalSiteList: res.data.siteList});
           }
-          else{
-            self.setState({arrivalSiteList: response.data});
-          }
-
-        }).catch(function(error){
-          console.log(error.code);
-        });
+        }
+        catch(error){
+          console.error('Error finding sites');
+        }
       }
     }
 
